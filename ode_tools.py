@@ -1,4 +1,3 @@
-import numpy as np
 from sympy import *
 from IPython.display import display, Math, Latex
 
@@ -168,3 +167,41 @@ class ode2:
             step3 = Eq(y, exp(rr * x) * (c1 * cos(ii * x) + c2 * cos(ii * x)))
             print("Neste caso, as raízes são complexas conjugadas, resultando em:")
             display(step3)
+    
+    @staticmethod
+    def solve_reduction_of_order(a_2, a_1, a_0, y_1):
+        x = symbols('x')
+        y = Function('y')
+
+        #step 0
+        P_x = a_1/a_2
+        Q_x = a_0/a_2
+        step0 = Eq(y(x).diff(x, x) + P_x * y(x).diff(x) + Q_x * y(x), 0)      
+        print("Escrevendo na forma padrão, temos:")
+        display(step0)
+
+        #step 1
+        text = r"Data a solução: " + latex(y_1)
+        print("Dada a solução:")
+        display(Math(r'y_1=' + latex(y_1)))
+
+        #step 2
+        print("Uma segunda solução L.I. é dada por:")
+        sy_1, sy_2 = symbols('y_1 y_2')
+        sdx, sppx = symbols('dx P(x)')
+        left = sy_2
+        middle = sy_1*Integral(exp(-Integral(sppx, x))/sy_1**2, x)
+        right = y_1 * Integral(exp(-Integral(P_x,x))/y_1**2, x)
+        text = latex(left) + "=" + latex(middle) +"="+ latex(right)
+        display(Math(text))
+
+        #step 3
+        print("Resolvendo a integral chegamos a:")
+        y_2 = y_1 * integrate(exp(-integrate(P_x,x))/y_1**2, x)
+        step3 = Eq(sy_2, y_2)
+        display(step3)
+
+        #step 4
+        print("E a solução geral é dada por:")
+        step3 = Eq(symbols('y'), symbols('c_1')*y_1 + symbols('c_2')*y_2)
+        display(step3)
