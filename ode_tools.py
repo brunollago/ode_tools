@@ -114,7 +114,7 @@ class ode1:
         M_y = integrate(M_xy, x)
         step3 = Eq(cc.diff('y', evaluate=False), N_xy - M_y.diff(y))
         print("Agora derivamos em relação a y e utilizamos N:")
-        text = r"\dfrac{d c}{d y}=N(x,y) -" + latex(integrate(M_xy, x))
+        text = r"\dfrac{d c}{d y}=N(x,y) -" + latex(M_y.diff(y))
         text = text + r"\rightarrow"
         display(Math(text + latex(step3)))
 
