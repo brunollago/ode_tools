@@ -130,3 +130,41 @@ class ode1:
         print("E o resultado final é dado por:")
         display(step5)
 
+class ode2:
+    @staticmethod
+    def solve_lin_h_coef_const(a, b, c):
+        m = symbols('m')
+        x = symbols('x')
+        c1, c2 = symbols('c_1 c_2')
+
+        #step 0
+        print("A equação diferencial é a seguinte:")
+        y2, y1, y = symbols('y\'\' y\' y')
+        step0 = Eq(a*y2 + b*y1 + c*y, 0)
+        display(step0)
+
+        #step 1
+        print("Neste caso, a equação auxiliar é:")
+        step1 = Eq(a*m**2 + b*m + c, 0)
+        display(step1)
+
+        #step 2
+        print("Com solução para m:")
+        res = solve(step1, m)
+        display(solve(step1, m))
+
+        #step 3
+        if len(res) == 1:
+            step3 = Eq(y, c1*exp(res[0]*x) + c2*x*exp(res[0]*x))
+            print("Neste caso, as raízes são iguais e temos:")
+            display(step3)            
+        elif(res[0].is_real):
+            step3 = Eq(y, c1*exp(res[0]*x) + c2*exp(res[1]*x))
+            print("Neste caso, as raízes são reais e distintas, logo:")
+            display(step3)
+        else:
+            rr = re(res[0])
+            ii = im(res[0])
+            step3 = Eq(y, exp(rr * x) * (c1 * cos(ii * x) + c2 * cos(ii * x)))
+            print("Neste caso, as raízes são complexas conjugadas, resultando em:")
+            display(step3)
