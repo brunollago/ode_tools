@@ -114,7 +114,7 @@ class ode1:
         step3 = Eq(cc.diff('y', evaluate=False), N_xy - M_y.diff(y))
         print("Agora derivamos em relação a y e utilizamos N:")
         text = r"\dfrac{d c}{d y}=N(x,y) -" + latex(M_y.diff(y))
-        text = text + r"\rightarrow"
+        text = text + r"\rightarrow "
         display(Math(text + latex(step3)))
 
         #step 4
@@ -205,3 +205,93 @@ class ode2:
         print("E a solução geral é dada por:")
         step3 = Eq(symbols('y'), symbols('c_1')*y_1 + symbols('c_2')*y_2)
         display(step3)
+    
+    @staticmethod
+    def solve_lin_h_cauchy_euler(a, b, c):
+        m = symbols('m')
+        x = symbols('x')
+        c1, c2 = symbols('c_1 c_2')
+
+        #step 0
+        print("A equação diferencial é a seguinte:")
+        y2, y1, y = symbols('y\'\' y\' y')
+        step0 = Eq(a*x**2*y2 + b*x*y1 + c*y, 0)
+        display(step0)
+
+        #step 1
+        print("Neste caso, a equação auxiliar é:")
+        step1 = Eq(a*m*(m-1) + b*m + c, 0)
+        display(step1)
+
+        #step 2
+        print("Com solução para m:")
+        res = solve(step1, m)
+        display(solve(step1, m))
+
+        #step 3
+        if len(res) == 1:
+            step3 = Eq(y, c1*x**res[0] + c2*ln(x)*x**res[0])
+            print("Neste caso, as raízes são iguais e temos:")
+            display(step3)            
+        elif(res[0].is_real):
+            step3 = Eq(y, c1*x**res[0] + c2*x**res[1])
+            print("Neste caso, as raízes são reais e distintas, logo:")
+            display(step3)
+        else:
+            rr = re(res[0])
+            ii = im(res[0])
+            step3 = Eq(y, x**rr * (c1 * cos(ii * ln(x)) + c2 * cos(ii * ln(x))))
+            print("Neste caso, as raízes são complexas conjugadas, resultando em:")
+            display(step3)
+    
+    @staticmethod
+    def solve_lin_nh_variation_of_parameters(a_2, a_1, a_0, g_x, y_1, y_2):
+        x = symbols('x')
+
+        #step 0
+        y2, y1, y = symbols('y\'\' y\' y')
+        P_x = a_1 / a_2
+        Q_x = a_0 / a_2
+        f_x = g_x / a_2
+        step0 = Eq(y2 + P_x * y1 + Q_x * y, f_x)
+        print("A equação é da forma:")
+        display(step0)
+
+        #step 0.5
+        print("Dadas as soluções da homogênea, a solução particular é da forma:")
+        text = r"y_p=u_1y_1+u_2y_2"
+        display(Math(text))
+        print("Onde:")
+        text = r"u'_1=\dfrac{\rm{det}(W_1)}{\rm{det}(W)}\quad ;\quad u'_2=\dfrac{\rm{det}(W_2)}{\rm{det}(W)}"
+        display(Math(text))
+        print("com:")
+        W = Matrix([[y_1, y_2],[y_1.diff(x), y_2.diff(x)]])
+        W_1 = Matrix([[0, y_2],[f_x, y_2.diff(x)]])
+        W_2 = Matrix([[y_1, 0],[y_1.diff(x), f_x]])
+        display(Math(r"W=" + latex(W)))
+        display(Math(r"W_1=" + latex(W_1)))
+        display(Math(r"W_2=" + latex(W_2)))
+
+        #step 1 and 2
+        step1_1 = Eq(symbols('u\'_1'), simplify(W_1.det() / W.det()))
+        step1_2 = Eq(symbols('u\'_2'), simplify(W_2.det() / W.det()))
+        step2_1 = Eq(symbols('u_1'), Integral(simplify(W_1.det() / W.det()), x))
+        step2_2 = Eq(symbols('u_2'), Integral(simplify(W_2.det() / W.det()), x))
+        print("As equações para u_1 e u_2 são:")
+        display(Math(latex(step1_1) + r"\rightarrow " + latex(step2_1)))
+        display(Math(latex(step1_2) + r"\rightarrow " + latex(step2_2)))
+
+        #step 3
+        u_1 = integrate(simplify(W_1.det() / W.det()), x)
+        u_2 = integrate(simplify(W_2.det() / W.det()), x)
+        step3_1 = Eq(symbols('u_1'), u_1)
+        step3_2 = Eq(symbols('u_2'), u_2)
+        print("Resolvendo as integrais, temos que:")
+        display(step3_1)
+        display(step3_2)
+
+        #step 4
+        c_1, c_2 = symbols('c_1 c_2')
+        step4 = Eq(symbols('y'), simplify(c_1 * y_1 + c_2 * y_2 + u_1 * y_1 + u_2 * y_2)) # May cause problems related to constants
+        print("E a solução geral é a seguinte:")
+        display(step4)
