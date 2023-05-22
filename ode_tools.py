@@ -252,7 +252,7 @@ class ode2:
         
         else:
             rr = re(res[0])
-            ii = im(res[0])
+            ii = abs(im(res[0]))
             step3 = Eq(y, x**rr * (c1 * cos(ii * ln(x)) + c2 * cos(ii * ln(x))))
             print("Neste caso, as raízes são complexas conjugadas, resultando em:")
             display(step3)
