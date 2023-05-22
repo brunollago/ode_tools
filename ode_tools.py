@@ -41,6 +41,7 @@ class ode1:
         step6 = Eq(y(x), (integrate(FI * f_x) + c) / FI)
         print("Por fim chegamos ao resultado:")
         display(step6)
+        return step6.rhs
     
     @staticmethod
     def solve_separable_variables(fr_x, gr_y, fl_x = 1, gl_y = 1):
@@ -84,6 +85,7 @@ class ode1:
         print("E simplificar o resultado:")
         step6 = Eq(y, factor(solve(step4, y)[0]))
         display(step6)
+        return step6.rhs
     
     @staticmethod
     def solve_exact_equations(M_xy, N_xy):
@@ -128,6 +130,7 @@ class ode1:
         step5 = Eq(ff, integrate(M_xy, x) + integrate(N_xy - M_y.diff(y), y))
         print("E o resultado final é dado por:")
         display(step5)
+        return step5.rhs
 
 class ode2:
     @staticmethod
@@ -156,17 +159,22 @@ class ode2:
         if len(res) == 1:
             step3 = Eq(y, c1*exp(res[0]*x) + c2*x*exp(res[0]*x))
             print("Neste caso, as raízes são iguais e temos:")
-            display(step3)            
+            display(step3)
+            return step3.rhs 
+         
         elif(res[0].is_real):
             step3 = Eq(y, c1*exp(res[0]*x) + c2*exp(res[1]*x))
             print("Neste caso, as raízes são reais e distintas, logo:")
             display(step3)
+            return step3.rhs  
+        
         else:
             rr = re(res[0])
             ii = im(res[0])
             step3 = Eq(y, exp(rr * x) * (c1 * sin(ii * x) + c2 * cos(ii * x)))
             print("Neste caso, as raízes são complexas conjugadas, resultando em:")
             display(step3)
+            return step3.rhs  
     
     @staticmethod
     def solve_reduction_of_order(a_2, a_1, a_0, y_1):
@@ -205,6 +213,7 @@ class ode2:
         print("E a solução geral é dada por:")
         step3 = Eq(symbols('y'), symbols('c_1')*y_1 + symbols('c_2')*y_2)
         display(step3)
+        return step3.rhs
     
     @staticmethod
     def solve_lin_h_cauchy_euler(a, b, c):
@@ -232,17 +241,22 @@ class ode2:
         if len(res) == 1:
             step3 = Eq(y, c1*x**res[0] + c2*ln(x)*x**res[0])
             print("Neste caso, as raízes são iguais e temos:")
-            display(step3)            
+            display(step3)           
+            return step3.rhs
+         
         elif(res[0].is_real):
             step3 = Eq(y, c1*x**res[0] + c2*x**res[1])
             print("Neste caso, as raízes são reais e distintas, logo:")
             display(step3)
+            return step3.rhs
+        
         else:
             rr = re(res[0])
             ii = im(res[0])
             step3 = Eq(y, x**rr * (c1 * cos(ii * ln(x)) + c2 * cos(ii * ln(x))))
             print("Neste caso, as raízes são complexas conjugadas, resultando em:")
             display(step3)
+            return step3.rhs
     
     @staticmethod
     def solve_lin_nh_variation_of_parameters(a_2, a_1, a_0, g_x, y_1, y_2):
@@ -295,3 +309,4 @@ class ode2:
         step4 = Eq(symbols('y'), simplify(c_1 * y_1 + c_2 * y_2 + u_1 * y_1 + u_2 * y_2)) # May cause problems related to constants
         print("E a solução geral é a seguinte:")
         display(step4)
+        return step4.rhs
