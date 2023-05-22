@@ -22,7 +22,7 @@ class ode1:
         display(FI_eq)
 
         #step 3
-        step3 = Eq(FI * y(x).diff(x) + FI * x * y(x), FI * f_x)
+        step3 = Eq(FI.doit() * y(x).diff(x) + FI.doit() * P_x * y(x), FI * f_x)
         print("Multiplicando a equação pelo fator integrante, chegamos a:")
         display(Math(latex(step3)))
 
