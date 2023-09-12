@@ -72,7 +72,7 @@ class ode1:
 
         #step 4
         c = symbols('c')
-        step4 = Eq(integrate(gl_y/gr_y), integrate(fr_x/fl_x) + c)
+        step4 = Eq(integrate(gl_y/gr_y, y), integrate(fr_x/fl_x, x) + c)
         print("O que resulta em:")
         display(step4)
 
