@@ -66,7 +66,7 @@ class ode1:
         display(step2)
 
         #step 3
-        step3 = Eq(Integral(gl_y/gr_y), Integral(fr_x/fl_x))
+        step3 = Eq(Integral(gl_y/gr_y, y), Integral(fr_x/fl_x, x))
         print("O próximo passo é integrar a equação:")
         display(step3)
 
